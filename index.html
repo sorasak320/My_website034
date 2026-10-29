@@ -1,11 +1,332 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Resume / Curriculum Vitae</title>
+    <!-- Google Fonts: Inter สำหรับภาษาอังกฤษ และ Noto Sans Thai สำหรับภาษาไทย -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-dark: #111827;  /* สีดำเข้มจัดสำหรับชื่อและหัวข้อ */
+            --body-text: #374151;     /* สีเทาเข้มสำหรับเนื้อหาหลัก */
+            --sub-text: #6b7280;      /* สีเทากลางสำหรับวันที่และข้อมูลรอง */
+            --bg-color: #f9fafb;      /* สีพื้นหลังภายนอก */
+            --card-bg: #ffffff;       /* สีพื้นหลังตัว CV */
+            --border-color: #e5e7eb;  /* สีเส้นคั่น เทาอ่อน */
+            --accent-bar: #111827;    /* สีแถบไฮไลท์หัวข้อ (สีดำ) */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--body-text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .cv-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 50px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Header Section */
+        header {
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-img-container {
+            flex-shrink: 0;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: #f3f4f6;
+            filter: grayscale(100%);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .header-main h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .header-main .subtitle {
+            font-size: 1rem;
+            color: var(--sub-text);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .contact-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--body-text);
+        }
+
+        .contact-info p {
+            margin-bottom: 4px;
+        }
+
+        /* Layout Grid */
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* Section Typography */
+        section {
+            margin-bottom: 35px;
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+            margin-bottom: 18px;
+            border-left: 3px solid var(--accent-bar);
+            padding-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        p, li {
+            font-size: 0.95rem;
+            color: var(--body-text);
+        }
+
+        .profile-text {
+            text-align: justify;
+        }
+
+        /* Timeline / History Items */
+        .timeline-item {
+            margin-bottom: 22px;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .title-bold {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .institution-name {
+            font-weight: 500;
+            color: var(--body-text);
+            font-size: 0.95rem;
+        }
+
+        .date {
+            font-size: 0.85rem;
+            color: var(--sub-text);
+            font-weight: 500;
+        }
+
+        .timeline-item ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 5px;
+        }
+
+        .timeline-item li {
+            position: relative;
+            padding-left: 15px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--sub-text);
+        }
+
+        /* Certificate Item Custom Styling */
+        .certificate-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .certificate-item:last-child {
+            border-bottom: none;
+        }
+
+        .cert-meta {
+            font-size: 0.85rem;
+            color: var(--sub-text);
+            margin-top: 2px;
+        }
+
+        /* Right Column Lists (Skills, Languages) */
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .skills-list strong {
+            color: var(--primary-dark);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .cv-container {
+                padding: 25px;
+            }
+            header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 20px;
+            }
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            .contact-info {
+                text-align: center;
+            }
+            .cv-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Print Settings */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .cv-container {
+                box-shadow: none;
+                padding: 0;
+                border: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    
-</body>
-</html>
+
+    <div class="cv-container">
+        <!-- Header -->
+        <header>
+            <div class="profile-img-container">
+                <!-- <img class="profile-img" src="https://unsplash.com" alt="รูปโปรไฟล์"> -->
+            </div>
+            
+            <div class="header-content">
+                <div class="header-main">
+                    <h1>สรศักดิ์ ผอมคง</h1>
+                    <div class="subtitle">นักศึกษาฝึกงาน / Web Developer Intern</div>
+                </div>
+                <div class="contact-info">
+                    <p>อีเมล: 68219010034@kbtc.ac.th</p>
+                    <p>เบอร์โทร: 080-621-2648</p>
+                    <p>ที่อยู่: กระบี่, ประเทศไทย</p>
+                    <p>LinkedIn: ://linkedin.com</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="cv-grid">
+            <!-- Left Column: Main Contents -->
+            <div class="main-col">
+                
+                <!-- บทสรุปประวัติส่วนตัว (Profile Summary) -->
+                <section>
+                    <h2>บทสรุปประวัติส่วนตัว</h2>
+                    <p class="profile-text">
+                        นักศึกษาคณะInformation Technology ชั้นปีที่ 2 ที่มีความกระตือรือร้นและมุ่งมั่น มีความรู้พื้นฐานที่แข็งแกร่งในด้านการพัฒนาเว็บไซต์และการจัดการฐานข้อมูล กำลังมองหาโอกาสในการฝึกงานเพื่อนำทักษะทางเทคนิคมาประยุกต์ใช้ในสถานการณ์จริง พร้อมเรียนรู้เทคโนโลยีใหม่ๆ และร่วมงานกับทีมอย่างมืออาชีพเพื่อสร้างสรรค์ผลงานที่มีคุณภาพให้กับองค์กร
+                    </p>
+                </section>
+
+                <!-- ประวัติการศึกษา (Education) -->
+                <section>
+                    <h2>ประวัติการศึกษา</h2>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <span class="title-bold">วิทยาลัยเทคนิคกระบี่ (Information Technology)</span>
+                            <span class="date">2023 - ปัจจุบัน</span>
+                        </div>
+                        <div class="institution-name">วิทยาลัยเทคโนโลยีดีเยี่ยม</div>
+                        <p style="font-size: 0.9rem; margin-top: 4px; color: var(--sub-text);">เกรดเฉลี่ยสะสม (GPAX): 3.65</p>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <span class="title-bold">โรงเรียนอนุบาลมุสลิมกระบี่ (สามัญ-ศาสนา)</span>
+                            <span class="date">2017 - 2023</span>
+                        </div>
+                        <div class="institution-name">โรงเรียนมัธยมศึกษาประจำจังหวัด</div>
+                        <p style="font-size: 0.9rem; margin-top: 4px; color: var(--sub-text);">เกรดเฉลี่ยสะสม (GPAX): 3.80</p>
+                    </div>
+                </section>
+
+                <!-- ประสบการณ์ทำงาน / กิจกรรม (Experience & Activities) -->
+                 <section>
+                    <h2>ประสบการณ์ทำงาน / กิจกรรม</h2>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <span class="job-title">ยังไม่มีกำลังหาอยู่ เมื่อมีโอกาส</span>
+                            <span class="date">มิ.ย. 2026 - ปัจจุบัน</span>
+                        </div>
+                        <div class="company-name"></div>
+                        <ul>
+                            <li></li>
+                            
+                        </ul>
+                    </div>
